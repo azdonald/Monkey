@@ -16,8 +16,8 @@ class Lexer:
         self.readPosition += 1
 
        
-    def nextToken(self): 
-              
+    def nextToken(self):
+        self.skipWhiteSpaces()              
         if self.ch == '=':
             tok = Tokens(ASSIGN.TYPE, self.ch)
         elif self.ch == ';':
@@ -34,12 +34,29 @@ class Lexer:
             tok = Tokens(LBRACE.TYPE, self.ch)
         elif self.ch == '}':
             tok = Tokens(RBRACE.TYPE, self.ch)
+        elif self.ch == '!':
+            tok = Tokens(EXCLAIM.TYPE, self.ch)
+        elif self.ch == '-':
+            tok = Tokens(HYPHEN.TYPE, self.ch)
+        elif self.ch == '/':
+            tok = Tokens(FSLASH.TYPE, self.ch)
+        elif self.ch == '*':
+            tok = Tokens(STAR.TYPE, self.ch)
+        elif self.ch == '<':
+            tok = Tokens(LESS.TYPE, self.ch)
+        elif self.ch == '>':
+            tok = Tokens(GREAT.TYPE, self.ch)
         elif self.ch == ' ':
             tok = Tokens(EOF.TYPE, '')
         else:
             if self.isLetter(self.ch):
                 literal = self.readIdentifier()
                 tkType = Tokens.lookUpIdentifier(literal)
+                tok = Tokens(tkType, literal)
+                return tok
+            elif self.isDigit(self.ch):
+                literal = self.readNumber()
+                tkType = INT.TYPE
                 tok = Tokens(tkType, literal)
                 return tok
             else:
@@ -57,3 +74,15 @@ class Lexer:
             self.readChar()
         return self.inputs[position:self.position]
 
+    def skipWhiteSpaces(self):
+        while self.ch == ' ' or self.ch == '\t' or self.ch == '\n' or self.ch == '\r':
+            self.readChar()
+
+    def isDigit(self, ch):
+        return '0' <= ch and ch <= '9'
+
+    def readNumber(self):
+        position = self.position
+        while self.isDigit(self.ch):
+            self.readChar()
+        return self.inputs[position:self.position]

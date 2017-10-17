@@ -14,6 +14,19 @@ testToken['}'] = 'RBRACE'
 testToken[';'] = 'SEMICOLON'
 testToken[','] = 'COMMA'
 testToken[''] = 'EOF'
+testToken['let'] = 'LET'
+testToken['5'] = 'INT'
+testToken['10'] = 'INT'
+testToken['fn'] = 'FUNCTION'
+testToken['if'] = 'IF'
+testToken['else'] = 'ELSE'
+testToken['return'] = 'RETURN'
+testToken['<'] = 'LESS'
+testToken['>'] = 'GREAT'
+testToken['!'] = 'EXCLAIM'
+testToken['-'] = 'HYPHEN'
+testToken['/'] = 'FSLASH'
+testToken['*'] = 'STAR'
 
 
 
@@ -24,14 +37,21 @@ class TestLexer(unittest.TestCase):
         pass
 
     def test_nextToken(self):
-        inputs = 'LET=+(){};'
+        inputs = '''let five = 5;
+                    let ten = 10;
+                    let add = fn(x, y) {
+                    x + y;
+                    };
+                    let result = add(five, ten);
+                    !-/*5;
+                    5 < 10 > 5;'''
         l = Lexer(inputs)   
-        l.readChar()     
-        for i in range(len(inputs)):        
+        l.readChar()  
+        while l.readPosition < len(inputs):
             tk = l.nextToken()
-            #print 'Literal is ' + tk.literal
-            self.assertEquals(tk.tokenType, testToken[tk.literal])
-            #self.assertEquals(tk.literal, l.ch)
+            print 'Literal is ' + tk.literal
+            self.assertEquals(tk.tokenType, testToken[tk.literal])     
+        
             
 
 
