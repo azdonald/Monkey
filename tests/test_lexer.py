@@ -51,7 +51,7 @@ class TestLexer(unittest.TestCase):
                     10 == 10;
                     10 != 9;'''
         l = Lexer(inputs)
-        while l.readPosition < len(inputs):
+        while l.readPosition <= len(inputs):
             tk = l.nextToken()
             print 'Literal is ' + tk.literal
             self.assertEquals(tk.tokenType, testToken[tk.literal])     
