@@ -17,6 +17,7 @@ testToken[''] = 'EOF'
 testToken['let'] = 'LET'
 testToken['5'] = 'INT'
 testToken['10'] = 'INT'
+testToken['9'] = 'INT'
 testToken['fn'] = 'FUNCTION'
 testToken['if'] = 'IF'
 testToken['else'] = 'ELSE'
@@ -24,9 +25,11 @@ testToken['return'] = 'RETURN'
 testToken['<'] = 'LESS'
 testToken['>'] = 'GREAT'
 testToken['!'] = 'EXCLAIM'
-testToken['-'] = 'HYPHEN'
 testToken['/'] = 'FSLASH'
 testToken['*'] = 'STAR'
+testToken['=='] = 'EQ'
+testToken['!='] = 'NOT_EQ'
+testToken['-'] = 'ILLEGAL'
 
 
 
@@ -44,9 +47,10 @@ class TestLexer(unittest.TestCase):
                     };
                     let result = add(five, ten);
                     !-/*5;
-                    5 < 10 > 5;'''
-        l = Lexer(inputs)   
-        l.readChar()  
+                    5 < 10 > 5;
+                    10 == 10;
+                    10 != 9;'''
+        l = Lexer(inputs)
         while l.readPosition < len(inputs):
             tk = l.nextToken()
             print 'Literal is ' + tk.literal

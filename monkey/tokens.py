@@ -17,12 +17,14 @@ RBRACE = TOKENS('RBRACE', '}')
 LESS = TOKENS('LESS', '<')
 GREAT = TOKENS('GREAT', '>')
 EXCLAIM = TOKENS('EXCLAIM', '!')
-HYPHEN = TOKENS('HYPHEN', '-')
 FSLASH = TOKENS('FSLASH', '/')
 STAR = TOKENS('STAR', '*')
+EQ = TOKENS('EQ', '==')
+NOT_EQ = TOKENS('NOT_EQ', '!=')
 
 
-keywords = {'fn': 'FUNCTION', 'let':'LET', 'if':'IF', 'else':'ELSE', 'return':'RETURN'}
+keywords = {'fn': 'FUNCTION', 'let':'LET', 'if':'IF', 'else':'ELSE', 
+            'return':'RETURN', 'true':'TRUE', 'false':'FALSE'}
 
 class Tokens:
     def __init__(self, tokenType, literal):

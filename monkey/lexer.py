@@ -6,6 +6,7 @@ class Lexer:
         self.position = position
         self.readPosition = readPosition
         self.ch = ch
+        self.readChar()
     
     def readChar(self):
         if self.readPosition >= len(self.inputs):
@@ -19,7 +20,21 @@ class Lexer:
     def nextToken(self):
         self.skipWhiteSpaces()              
         if self.ch == '=':
-            tok = Tokens(ASSIGN.TYPE, self.ch)
+            if self.peek() == '=':
+                literal = self.ch
+                self.readChar()
+                literal += self.ch
+                tok = Tokens(EQ.TYPE,literal)
+            else:
+                tok = Tokens(ASSIGN.TYPE,self.ch)
+        elif self.ch == '!':
+            if self.peek() == '=':
+                literal = self.ch
+                self.readChar()
+                literal += self.ch
+                tok = Tokens(NOT_EQ.TYPE,literal)
+            else:
+                tok = Tokens(EXCLAIM.TYPE,self.ch)
         elif self.ch == ';':
             tok = Tokens(SEMICOLON.TYPE, self.ch)
         elif self.ch == '(':
@@ -36,8 +51,6 @@ class Lexer:
             tok = Tokens(RBRACE.TYPE, self.ch)
         elif self.ch == '!':
             tok = Tokens(EXCLAIM.TYPE, self.ch)
-        elif self.ch == '-':
-            tok = Tokens(HYPHEN.TYPE, self.ch)
         elif self.ch == '/':
             tok = Tokens(FSLASH.TYPE, self.ch)
         elif self.ch == '*':
@@ -86,3 +99,8 @@ class Lexer:
         while self.isDigit(self.ch):
             self.readChar()
         return self.inputs[position:self.position]
+
+    def peek(self):
+        if self.readPosition >= len(self.inputs):
+            return 0
+        return self.inputs[self.readPosition]
