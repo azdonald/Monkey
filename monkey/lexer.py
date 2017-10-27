@@ -1,6 +1,6 @@
 from .tokens import *
 
-class Lexer:
+class Lexer(object):
     def __init__(self, inputs, position=0, readPosition=0, ch=0):
         self.inputs = inputs
         self.position = position

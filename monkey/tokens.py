@@ -26,7 +26,7 @@ NOT_EQ = TOKENS('NOT_EQ', '!=')
 keywords = {'fn': 'FUNCTION', 'let':'LET', 'if':'IF', 'else':'ELSE', 
             'return':'RETURN', 'true':'TRUE', 'false':'FALSE'}
 
-class Tokens:
+class Tokens(object):
     def __init__(self, tokenType, literal):
         self.tokenType = tokenType
         self.literal = literal
