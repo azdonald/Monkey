@@ -59,8 +59,8 @@ class Lexer(object):
             tok = Tokens(LESS.TYPE, self.ch)
         elif self.ch == '>':
             tok = Tokens(GREAT.TYPE, self.ch)
-        elif self.ch == ' ':
-            tok = Tokens(EOF.TYPE, '')
+        elif self.ch == ':':
+            tok = Tokens(EOF.TYPE, ':')
         else:
             if self.isLetter(self.ch):
                 literal = self.readIdentifier()

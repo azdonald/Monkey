@@ -7,8 +7,7 @@ class Program(object):
     def tokenLiteral(self):
         if len(self.statements) > 0:
             return self.statements[0]
-        else:
-            return ''
+        return ''
 
 
 class Letstatement(object):
@@ -18,7 +17,7 @@ class Letstatement(object):
         self.value = value
 
     def tokenLiteral(self):
-        pass
+        return self.token.literal
 
 class Identifier(object):
     def __init__(self, token, value):
@@ -26,7 +25,7 @@ class Identifier(object):
         self.value = value
 
     def tokenLiteral(self):
-        pass
+        return self.token.literal
 
 
 class Parser(object):
@@ -37,7 +36,7 @@ class Parser(object):
 
     def nextToken(self):
         self.curToken = self.peekToken
-        self.peekToken = self.lexer.nextToken
+        self.peekToken = self.lexer.nextToken()
 
     def parseProgram(self):
         program = Program()
@@ -51,8 +50,7 @@ class Parser(object):
     def parseStatement(self):
         if self.curToken.tokenType == Tokens.lookUpIdentifier('let'):
             return self.parseLetStatement()
-        else:
-            return None
+        return None
                 
 
     def parseLetStatement(self):
@@ -68,15 +66,15 @@ class Parser(object):
         return stmt
 
     def curTokenIs(self, tokenType):
+        print 'Current IS ' + self.peekToken.tokenType
         return self.curToken.tokenType == tokenType
 
     def peekTokenIs(self, tokenType):
+        print 'PEEK IS ' + self.peekToken.tokenType
         return self.peekToken.tokenType == tokenType
 
     def expectPeek(self, tokenType):
         if self.peekTokenIs(tokenType):
             self.nextToken()
             return True
-        else:
-            return False
-
+        return False
