@@ -15,14 +15,30 @@ class TestParser(unittest.TestCase):
                     let ten = 10;
                     let foobar = 838383;    :'''
         lex = Lexer(inputs)
-        tk = lex.nextToken()
-        pas = Parser(lex, tk, tk)
-        print tk.tokenType
+        curtoken = lex.nextToken()
+        peektoken = lex.nextToken()
+        pas = Parser(lex, curtoken, peektoken)
         program = pas.parseProgram()
 
         self.assertNotEqual(program, None)
         self.assertEquals(3, len(program.statements))
-        print len(program)
+        for i in range(len(program.statements) - 1):
+            self.assertEquals(program.statements[i].tokenLiteral(), 'let')
+
+    def testErrors(self):
+        inputs = '''let five  5;
+                    let ten  10;
+                    let foobar  838383;    :'''
+        lex = Lexer(inputs)
+        curtoken = lex.nextToken()
+        peektoken = lex.nextToken()
+        pas = Parser(lex, curtoken, peektoken)
+        program = pas.parseProgram()
+
+        self.assertEquals(3, len(pas.errors))
+        print 'Number of error is {}'.format(len(pas.errors))
+        
+        
 
 
 if __name__ == '__main__':

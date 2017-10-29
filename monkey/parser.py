@@ -33,6 +33,7 @@ class Parser(object):
         self.lexer = lexer
         self.curToken = curToken
         self.peekToken = peekToken
+        self.errors = []
 
     def nextToken(self):
         self.curToken = self.peekToken
@@ -66,15 +67,23 @@ class Parser(object):
         return stmt
 
     def curTokenIs(self, tokenType):
-        print 'Current IS ' + self.peekToken.tokenType
+        print 'Current IS ' + self.curToken.tokenType
         return self.curToken.tokenType == tokenType
 
     def peekTokenIs(self, tokenType):
         print 'PEEK IS ' + self.peekToken.tokenType
         return self.peekToken.tokenType == tokenType
 
+
     def expectPeek(self, tokenType):
         if self.peekTokenIs(tokenType):
             self.nextToken()
             return True
-        return False
+        else:
+            self.peekError(tokenType, self.peekToken.tokenType)
+            return False
+
+    def peekError(self, expectedtokenType, tokenType):
+        message = 'Expected next token to be {} but got  {}'.format(expectedtokenType, tokenType)
+        self.errors.append(message)
+        
