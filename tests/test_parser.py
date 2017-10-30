@@ -27,8 +27,8 @@ class TestParser(unittest.TestCase):
 
     def testErrors(self):
         inputs = '''let five  5;
-                    let ten  10;
-                    let foobar  838383;    :'''
+                    let =  10;
+                    let   838383;    :'''
         lex = Lexer(inputs)
         curtoken = lex.nextToken()
         peektoken = lex.nextToken()
@@ -37,8 +37,18 @@ class TestParser(unittest.TestCase):
 
         self.assertEquals(3, len(pas.errors))
         print 'Number of error is {}'.format(len(pas.errors))
-        
-        
+
+    def testReturnStatement(self):
+        inputs = '''return 5;
+                    return 10;
+                    return 838383;    :'''
+        lex = Lexer(inputs)
+        curtoken = lex.nextToken()
+        peektoken = lex.nextToken()
+        pas = Parser(lex, curtoken, peektoken)
+        program = pas.parseProgram()
+
+        self.assertEquals(3, len(program.statements))
 
 
 if __name__ == '__main__':

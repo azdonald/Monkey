@@ -27,7 +27,14 @@ class Identifier(object):
     def tokenLiteral(self):
         return self.token.literal
 
+class ReturnStatement(object):
+    def __init__(self, token, value):
+        self.token = token
+        self.value = value
 
+    def tokenLiteral(self):
+        return self.token.literal
+    
 class Parser(object):
     def __init__(self, lexer, curToken, peekToken):
         self.lexer = lexer
@@ -51,8 +58,9 @@ class Parser(object):
     def parseStatement(self):
         if self.curToken.tokenType == Tokens.lookUpIdentifier('let'):
             return self.parseLetStatement()
-        return None
-                
+        elif self.curToken.tokenType == Tokens.lookUpIdentifier('return'):
+            return self.parseReturnStatement()
+        return None                
 
     def parseLetStatement(self):
         stmt = Letstatement(self.curToken)
@@ -64,6 +72,12 @@ class Parser(object):
         while not self.curTokenIs(SEMICOLON.TYPE):
             self.nextToken()
 
+        return stmt
+    def parseReturnStatement(self):
+        stmt = ReturnStatement(self.curToken, self.curToken.literal)
+        self.nextToken()
+        while not self.curTokenIs(SEMICOLON.TYPE):
+            self.nextToken()
         return stmt
 
     def curTokenIs(self, tokenType):
